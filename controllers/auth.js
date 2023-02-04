@@ -25,12 +25,15 @@ const crearUsuario = async(req, res = response ) => {
         const salt = bcrypt.genSaltSync();
         usuario.password = bcrypt.hashSync(password,salt);  
 
+        //generamos el token 
+        const token = await generarJWT( usuario.id, usuario.name );
 
         await usuario.save(); 
         res.status(201).json({
             ok:true,
             uid:usuario.id,
-            name:usuario.name
+            name:usuario.name,
+            token
         });        
     } catch (error) {
         console.log(error)
@@ -67,12 +70,15 @@ const loginUusuario = async(req,res) => {
         }
 
         //generamos el token 
+        const token = await generarJWT( usuario.id, usuario.name );
+
 
         //en este punto el usuario existe y su password es correcta
         return res.status(201).json({
             ok:true,
             uid:usuario.id,
-            name:usuario.name
+            name:usuario.name,
+            token
         });   
 
     } catch (error) {
@@ -91,10 +97,23 @@ const loginUusuario = async(req,res) => {
     }); 
 }
 
-const revalidarToken = (req,res) => {
+const revalidarToken = async(req,res) => {
+
+
+    const uid = req.uid;
+    const name = req.name; 
+
+    console.log("datos para generar el nuevo token1:",uid);
+    console.log("datos para generar el nuevo token2:",name);
+
+    //si es valido, pero esta vencido generamos un nuevo
+    const token = await generarJWT( uid, name );    
+
     res.json({
         ok:true,
-        msg:'re-validar token'
+        msg:'re-validar token',
+        uid: uid,
+        token
     }); 
 }
 
