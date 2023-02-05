@@ -37,6 +37,8 @@ app.use( express.json() );
 //la voy a asociar con lo que me exporte en el requere()
 app.use('/api/auth',require('./routes/auth')); 
 
+//la voy a asociar con lo que me exporte en el requere()
+app.use('/api/event',require('./routes/events')); 
 
 //escuchamos
 app.listen( process.env.PORT, () => {
