@@ -23,7 +23,7 @@ dbConnection();
 
 
 //aplicamos el cors
-
+app.use(cors()); 
 
 //directorio publico
 app.use( express.static('public')); 
@@ -42,5 +42,5 @@ app.use('/api/event',require('./routes/events'));
 
 //escuchamos
 app.listen( process.env.PORT, () => {
-    console.log('servidor escuchano en puerto:', process.env.PORT); 
+    console.log('servidor escuchando en puerto:', process.env.PORT); 
 }); 
