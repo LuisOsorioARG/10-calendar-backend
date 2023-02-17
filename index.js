@@ -40,6 +40,9 @@ app.use('/api/auth',require('./routes/auth'));
 //la voy a asociar con lo que me exporte en el requere()
 app.use('/api/event',require('./routes/events')); 
 
+//la voy a asociar con lo que me exporte en el requere()
+app.use('/api/customer',require('./routes/customer')); 
+
 //escuchamos
 app.listen( process.env.PORT, () => {
     console.log('servidor escuchando en puerto:', process.env.PORT); 
