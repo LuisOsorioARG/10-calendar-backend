@@ -6,18 +6,25 @@ const Customer = require('../models/Customer');
 
 //const { generarJWT } = require('../helpers/jwt'); 
 
+
+
 const getCustomer = async(req, res = response ) => {
     try {
 
-        console.log("Estoy por GetCustomer!!!"); 
-        /*
-        const eventos = await Evento.find()
-                                    .populate('user','name');  // el populate le agrega los datos de la referencia del usuario   
+        //busca todos los clientes...
+        let customer = await Customer.find();
 
-        */
-        res.status(200).json({
+        if ( !customer ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No hay clientes para mostrar'
+                });
+        }
+
+        return res.status(200).json({
             ok:true,
-            msg: 'get-customer OK'
+            msg: 'El cliente exite',
+            customer
         });        
     } catch (error) {
         console.log(error)
@@ -29,17 +36,60 @@ const getCustomer = async(req, res = response ) => {
  
 }
 
+const getCustomerbyId = async(req, res = response ) => {
+    try {
+
+        const phone = "0343-0909125"; 
+
+        /*
+        const eventos = await Evento.find()
+                                    .populate('user','name');  // el populate le agrega los datos de la referencia del usuario   
+
+        */
+
+        let customer = await Customer.findOne({ phone });
+
+        if ( !customer ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El cliente no existe'
+                });
+        }
+
+        return res.status(200).json({
+            ok:true,
+            msg: 'El cliente exite',
+            customer
+        });        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+ 
+}
 const crearCustomer = async(req, res = response ) => {
 
-    const customer = new Customer( req.body ); 
+    const { phone } = req.body; 
+
+    let customer = await Customer.findOne({ phone });
+
+    if ( customer ) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'El cliente ya existe'
+            });
+    }
+
+    customer = new Customer( req.body ); 
 
     try {
 
-        //customer.user = req.uid; 
-
         const eventoGuardado = await customer.save(); 
 
-        res.status(201).json({
+        return res.status(201).json({
             ok:true,
             evento: eventoGuardado
         });        
@@ -61,7 +111,7 @@ const actualizarCustomer = async(req, res = response ) => {
         const evento = await Evento.findById( eventoID ); 
 
         if (!evento) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok:false,
                 msg:'Evento no existe por ese id'
             })
@@ -107,7 +157,7 @@ const eliminarCustomer = async(req, res = response ) => {
         const evento = await Evento.findById( eventoID ); 
 
         if (!evento) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok:false,
                 msg:'Evento no existe por ese id'
             })

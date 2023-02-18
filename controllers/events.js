@@ -9,8 +9,15 @@ const getEventos = async(req, res = response ) => {
     try {
 
         const eventos = await Evento.find()
-                                    .populate('user','name');  // el populate le agrega los datos de la referencia del usuario   
-
+                                    .populate('user','name');  
+        
+        /* el populate le agrega los datos de la referencia del usuario   
+           es importante destacar que user es una referencia que colocamos
+           en el registro del evento y que name es uno de los campos
+           que queremos traer de esa referencia. 
+           el populate trae la referencia que tenga nuestro registro
+           a otra coleccion que tenga nuestra base de datos.
+        */
         res.status(201).json({
             ok:true,
             eventos
@@ -57,7 +64,7 @@ const actualizarEvento = async(req, res = response ) => {
         const evento = await Evento.findById( eventoID ); 
 
         if (!evento) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok:false,
                 msg:'Evento no existe por ese id'
             })
@@ -78,6 +85,9 @@ const actualizarEvento = async(req, res = response ) => {
             user:uid      //agrego el usuario que no viene en el req.body
         }
 
+        //el new: true es para que me traiga el evento actualizado en la 
+        //respueta, sino trae el viejo evento (como estaba antes de ser 
+        //actualizado)
         const eventoActualizado = await Evento.findByIdAndUpdate( eventoID, nuevoEvento, { new: true }); 
 
         res.json({
@@ -103,7 +113,7 @@ const eliminarEvento = async(req, res = response ) => {
         const evento = await Evento.findById( eventoID ); 
 
         if (!evento) {
-            res.status(404).json({
+            return res.status(404).json({
                 ok:false,
                 msg:'Evento no existe por ese id'
             })
