@@ -113,6 +113,7 @@ const revalidarToken = async(req,res) => {
         ok:true,
         msg:'re-validar token',
         uid: uid,
+        name: name,
         token
     }); 
 }

@@ -2,25 +2,29 @@ const { Request, Response } = require('express');
 const bcrypt = require('bcryptjs'); 
 const Usuario = require('../models/Usuario'); 
 const Evento = require('../models/Evento'); 
+const Customer = require('../models/Customer'); 
 
 //const { generarJWT } = require('../helpers/jwt'); 
 
-const getEventos = async(req, res = response ) => {
+
+
+const getCustomer = async(req, res = response ) => {
     try {
 
-        const eventos = await Evento.find()
-                                    .populate('user','name');  
-        
-        /* el populate le agrega los datos de la referencia del usuario   
-           es importante destacar que user es una referencia que colocamos
-           en el registro del evento y que name es uno de los campos
-           que queremos traer de esa referencia. 
-           el populate trae la referencia que tenga nuestro registro
-           a otra coleccion que tenga nuestra base de datos.
-        */
-        res.status(201).json({
+        //busca todos los clientes...
+        let customer = await Customer.find();
+
+        if ( !customer ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'No hay clientes para mostrar'
+                });
+        }
+
+        return res.status(200).json({
             ok:true,
-            eventos
+            msg: 'El cliente exite',
+            customer
         });        
     } catch (error) {
         console.log(error)
@@ -32,17 +36,60 @@ const getEventos = async(req, res = response ) => {
  
 }
 
-const crearEvento = async(req, res = response ) => {
+const getCustomerbyId = async(req, res = response ) => {
+    try {
 
-    const evento = new Evento( req.body ); 
+        const phone = "0343-0909125"; 
+
+        /*
+        const eventos = await Evento.find()
+                                    .populate('user','name');  // el populate le agrega los datos de la referencia del usuario   
+
+        */
+
+        let customer = await Customer.findOne({ phone });
+
+        if ( !customer ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'El cliente no existe'
+                });
+        }
+
+        return res.status(200).json({
+            ok:true,
+            msg: 'El cliente exite',
+            customer
+        });        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+ 
+}
+const crearCustomer = async(req, res = response ) => {
+
+    const { phone } = req.body; 
+
+    let customer = await Customer.findOne({ phone });
+
+    if ( customer ) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'El cliente ya existe'
+            });
+    }
+
+    customer = new Customer( req.body ); 
 
     try {
 
-        evento.user = req.uid; 
+        const eventoGuardado = await customer.save(); 
 
-        const eventoGuardado = await evento.save(); 
-
-        res.status(201).json({
+        return res.status(201).json({
             ok:true,
             evento: eventoGuardado
         });        
@@ -56,7 +103,7 @@ const crearEvento = async(req, res = response ) => {
  
 }
 
-const actualizarEvento = async(req, res = response ) => {
+const actualizarCustomer = async(req, res = response ) => {
     try {
         const eventoID = req.params.id;
         const uid = req.uid; 
@@ -85,9 +132,6 @@ const actualizarEvento = async(req, res = response ) => {
             user:uid      //agrego el usuario que no viene en el req.body
         }
 
-        //el new: true es para que me traiga el evento actualizado en la 
-        //respueta, sino trae el viejo evento (como estaba antes de ser 
-        //actualizado)
         const eventoActualizado = await Evento.findByIdAndUpdate( eventoID, nuevoEvento, { new: true }); 
 
         res.json({
@@ -105,7 +149,7 @@ const actualizarEvento = async(req, res = response ) => {
  
 }
 
-const eliminarEvento = async(req, res = response ) => {
+const eliminarCustomer = async(req, res = response ) => {
     try {
         const eventoID = req.params.id;
         const uid = req.uid; 
@@ -147,8 +191,8 @@ const eliminarEvento = async(req, res = response ) => {
 
 
 module.exports = { 
-    getEventos,
-    crearEvento,
-    actualizarEvento,
-    eliminarEvento
+    getCustomer,
+    crearCustomer,
+    actualizarCustomer,
+    eliminarCustomer
 }; 
