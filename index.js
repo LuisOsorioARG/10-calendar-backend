@@ -43,6 +43,10 @@ app.use('/api/event',require('./routes/events'));
 //la voy a asociar con lo que me exporte en el requere()
 app.use('/api/customer',require('./routes/customer')); 
 
+app.get('*',(req,res) => {
+    res.sendFile( __dirname + '/public/index.html'); 
+});
+
 //escuchamos
 app.listen( process.env.PORT, () => {
     console.log('servidor escuchando en puerto:', process.env.PORT); 
