@@ -13,25 +13,23 @@ const router = Router();
 //primero pasa por este .use() para validar nuestro token
 router.use( validarJWT ); 
 
-router.get('/', getCustomer);
+router.get('/customers', getCustomer);
 
 router.post(
-    '/', 
+    '/new', 
     [
-        //check('title','El titulo es obligatorio').not().isEmpty(),
-        //check('start','La fecha es obligatoria').custom( isDate ),
-        //check('end','Fecha del final debe ser obligatoria').custom( isDate ),
-        //validarCampos
+        check('name','El nombre es obligatorio').not().isEmpty(),
+        check('phone','El celular o telefono son obligatorios').not().isEmpty(),
+        validarCampos
     ]
     , 
     crearCustomer);
 
 router.put('/:id',
     [
-    //check('title','El titulo es obligatorio').not().isEmpty(),
-    //check('start','La fecha es obligatoria').custom( isDate ),
-    //check('end','Fecha del final debe ser obligatoria').custom( isDate ),
-    //validarCampos
+    check('name','El nombre es obligatorio').not().isEmpty(),
+    check('phone','El celular o telefono son obligatorios').not().isEmpty(),
+    validarCampos
     ],
     actualizarCustomer);
 

@@ -23,7 +23,7 @@ const getCustomer = async(req, res = response ) => {
 
         return res.status(200).json({
             ok:true,
-            msg: 'El cliente exite',
+            msg: 'El cliente existe',
             customer
         });        
     } catch (error) {
@@ -72,14 +72,15 @@ const getCustomerbyId = async(req, res = response ) => {
 }
 const crearCustomer = async(req, res = response ) => {
 
-    const { phone } = req.body; 
+    const phone = req.body.phone; 
+    const phone3 = { phone }; 
 
-    let customer = await Customer.findOne({ phone });
+    let customer = await Customer.findOne(phone3);
 
     if ( customer ) {
         return res.status(400).json({
             ok: false,
-            msg: 'El cliente ya existe'
+            msg: 'Ya existe un cliente con ese celular'
             });
     }
 
@@ -105,38 +106,54 @@ const crearCustomer = async(req, res = response ) => {
 
 const actualizarCustomer = async(req, res = response ) => {
     try {
-        const eventoID = req.params.id;
+
         const uid = req.uid; 
 
-        const evento = await Evento.findById( eventoID ); 
+        const customerID = req.params.id;
+        const customerID3 = { _id: customerID }; 
 
-        if (!evento) {
+        console.log("---customerID3---------------------------Tipo de UI:",customerID3); 
+
+        let customer = await Customer.findById( customerID3 ); 
+
+        if (!customer) {
             return res.status(404).json({
                 ok:false,
-                msg:'Evento no existe por ese id'
+                msg:'No existe cliente con ese id'
             })
         }
 
-        //logica de negocio: no quiero que un usuario edite un evento 
-        //que no sea de èl, por eso ahora preguntamos
-        if ( evento.user.toString() !== uid ) {
-            return res.status(401).json({
+        const phone = req.body.phone; 
+        const phone3 = { phone }; 
+    
+        let customerAuxiliar = await Customer.findOne(phone3);
+    
+        /*
+        if ( customerAuxiliar === customer) {
+            console.log("------------------------------SON IGUALES!!! -------"); 
+
+        }
+        */
+
+        if ( customerAuxiliar ) {
+            return res.status(400).json({
                 ok: false,
-                msg: 'Usuario no autorizado para cambiar evento'
-            });
+                msg: 'Ya existe un cliente con ese celular'
+                });
         }
 
+
         //en este punto tengo todo OK para actualizar el evento
-        const nuevoEvento = {
+        const nuevoCustomer = {
             ...req.body,
             user:uid      //agrego el usuario que no viene en el req.body
         }
 
-        const eventoActualizado = await Evento.findByIdAndUpdate( eventoID, nuevoEvento, { new: true }); 
+        const customerActualizado = await Evento.findByIdAndUpdate( customerID3, nuevoCustomer, { new: true }); 
 
         res.json({
             ok:true,
-            evento: eventoActualizado
+            evento: customerActualizado
         });
        
     } catch (error) {
@@ -151,10 +168,10 @@ const actualizarCustomer = async(req, res = response ) => {
 
 const eliminarCustomer = async(req, res = response ) => {
     try {
-        const eventoID = req.params.id;
+        const customerID = req.params.id;
         const uid = req.uid; 
 
-        const evento = await Evento.findById( eventoID ); 
+        const evento = await Evento.findById( customerID ); 
 
         if (!evento) {
             return res.status(404).json({
@@ -165,14 +182,19 @@ const eliminarCustomer = async(req, res = response ) => {
 
         //logica de negocio: no quiero que un usuario edite un evento 
         //que no sea de èl, por eso ahora preguntamos
+        /*
         if ( evento.user.toString() !== uid ) {
             return res.status(401).json({
                 ok: false,
                 msg: 'Usuario no autorizado para eliminar este evento'
             });
         }
+        */
 
-        const eventoEliminado = await Evento.findByIdAndDelete( eventoID ); 
+
+        /* FALTA QUE NO SE PUEDA CUSTOMER SI TIENE EVENTOS/FICHAS ASOCIADAS AL EL */
+
+        const eventoEliminado = await Evento.findByIdAndDelete( customerID ); 
 
         res.json({
             ok:true,
