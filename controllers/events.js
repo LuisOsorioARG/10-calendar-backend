@@ -123,12 +123,14 @@ const eliminarEvento = async(req, res = response ) => {
 
         //logica de negocio: no quiero que un usuario edite un evento 
         //que no sea de èl, por eso ahora preguntamos
+        /*
         if ( evento.user.toString() !== uid ) {
             return res.status(401).json({
                 ok: false,
                 msg: 'Usuario no autorizado para eliminar este evento'
             });
         }
+        */
 
         const eventoEliminado = await Evento.findByIdAndDelete( eventoID ); 
 
