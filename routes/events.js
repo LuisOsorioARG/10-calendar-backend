@@ -18,6 +18,7 @@ router.get('/', getEventos);
 router.post(
     '/', 
     [
+        check('customerID','El customerID es obligatorio').not().isEmpty(),
         check('title','El titulo es obligatorio').not().isEmpty(),
         check('start','La fecha es obligatoria').custom( isDate ),
         check('end','Fecha del final debe ser obligatoria').custom( isDate ),

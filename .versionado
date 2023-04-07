@@ -2,3 +2,4 @@
 1.1.1 arreglamos el ruteo en archivo index.js lineas 46-47
 1.2.0 agregamos los customers
 1.2.1 corregimos el Alta de Customers 
+1.3.0 aceptamos el customerID en los eventos

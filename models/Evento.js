@@ -22,9 +22,12 @@ const EventoSchema = Schema({
         type: Schema.Types.ObjectId,
         ref: 'Usuario',
         required: true
+    },
+    customerID: {
+        type: Schema.Types.ObjectId,
+        ref: 'Customer',
+        required: true
     }
-
-
 });
 
 /*
