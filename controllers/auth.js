@@ -103,9 +103,6 @@ const revalidarToken = async(req,res) => {
     const uid = req.uid;
     const name = req.name; 
 
-    console.log("datos para generar el nuevo token1:",uid);
-    console.log("datos para generar el nuevo token2:",name);
-
     //si es valido, pero esta vencido generamos un nuevo
     const token = await generarJWT( uid, name );    
 

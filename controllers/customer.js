@@ -75,7 +75,7 @@ const actualizarCustomer = async(req, res = response ) => {
         const customerID = req.params.id;
         const customerID3 = { _id: customerID }; 
 
-        console.log("CustomerID3:",customerID);
+        //console.log("CustomerID3:",customerID);
 
         let customer = await Customer.findById( customerID3 ); 
 
@@ -115,7 +115,7 @@ const eliminarCustomer = async(req, res = response ) => {
         const customerID3 = { _id: customerID }; 
         const uid = req.uid; 
 
-        console.log("CustomerID3:",customerID);
+        //console.log("CustomerID3:",customerID);
 
 
         let customer = await Customer.findById( customerID3 ); 
