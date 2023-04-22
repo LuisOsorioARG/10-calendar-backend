@@ -20,13 +20,9 @@ const dbConnection = async() => {
     try {
         
         console.log("Intentando conectar a la base de datos!!"); 
-
         mongoose.set('strictQuery', true);
-
         await mongoose.connect( process.env.DB_CNN,options);
-
         console.log('DB Online conectada OK !!!!');
-
 
     } catch (error) {
         console.log(error);
