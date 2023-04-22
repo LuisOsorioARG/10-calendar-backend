@@ -16,6 +16,12 @@ const UsuarioSchema = Schema({
     }
 });
 
+//esto cambia el valor de los campos del json
+UsuarioSchema.method('toJSON', function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.id = _id;
+    return object;
+});
 
 module.exports = model('Usuario', UsuarioSchema );
 

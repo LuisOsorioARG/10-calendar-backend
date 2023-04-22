@@ -43,7 +43,7 @@ const crearCustomer = async(req, res = response ) => {
     if ( customer ) {
         return res.status(400).json({
             ok: false,
-            msg: 'Ya existe un cliente con ese celular'
+            msg: 'Ya existe un cliente con ese celular:' + customer.name.toString()
             });
     }
 
@@ -71,11 +71,8 @@ const actualizarCustomer = async(req, res = response ) => {
     try {
 
         const uid = req.uid; 
-
         const customerID = req.params.id;
         const customerID3 = { _id: customerID }; 
-
-        console.log("CustomerID3:",customerID);
 
         let customer = await Customer.findById( customerID3 ); 
 
@@ -86,6 +83,27 @@ const actualizarCustomer = async(req, res = response ) => {
             })
         }
     
+        // CONTROL 2 vemos si hay clientes con ese mismo CELULAR -------
+        
+        const phone = req.body.phone; 
+        const phone3 = { phone }; 
+    
+        customer = await Customer.findOne(phone3);
+    
+        let celularEnOtroCliente = false;
+        if ( customer ) {
+            let CustomerExistenteID = customer._id.toString();
+            if ( CustomerExistenteID !== customerID )
+                celularEnOtroCliente = true;
+        }
+
+        if ( customer && celularEnOtroCliente ) {
+            return res.status(400).json({
+                ok: false,
+                msg: 'Ya existe un cliente con ese celular:' + customer.name.toString()
+                });
+        }
+
         //en este punto tengo todo OK para actualizar el customer
         const nuevoCustomer = {
             ...req.body,
@@ -115,11 +133,7 @@ const eliminarCustomer = async(req, res = response ) => {
         const customerID3 = { _id: customerID }; 
         const uid = req.uid; 
 
-        console.log("CustomerID3:",customerID);
-
-
         let customer = await Customer.findById( customerID3 ); 
-
 
         if (!customer) {
             return res.status(404).json({
