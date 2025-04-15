@@ -32,16 +32,14 @@ app.use( express.static('public'));
 // Lectura y parseo del Body
 app.use( express.json() ); 
 
-//ruta del get
-//este use sigfnica que la ruta (primer parametro)
-//la voy a asociar con lo que me exporte en el requere()
+
 app.use('/api/auth',require('./routes/auth')); 
 
-//la voy a asociar con lo que me exporte en el requere()
 app.use('/api/event',require('./routes/events')); 
 
-//la voy a asociar con lo que me exporte en el requere()
 app.use('/api/customer',require('./routes/customer')); 
+
+app.use('/api/materiasprimas',require('./routes/materiasPrimas')); 
 
 app.get('*',(req,res) => {
     res.sendFile( __dirname + '/public/index.html'); 
