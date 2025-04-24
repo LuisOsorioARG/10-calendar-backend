@@ -13,11 +13,6 @@ const getRecetas = async (req, res = response) => {
         msg: 'No hay recetas para mostrar'
       });
     }
-
-    //si lei una receta, ahora tengo 
-    //que completar la información de sus elementos
-    //con el precio
-
     const materias = await MateriasPrimas.find();
 
     if (materias.length === 0) {
@@ -27,11 +22,37 @@ const getRecetas = async (req, res = response) => {
       });
     }
 
-    console.log("MATERIALES:",materias); 
+    // PASO 1 En recetas[i].ingredientes[0].codigo tenemos en numerico el valor del codigo
+    let newIngredientes = [];
+    for (i=0;i<recetas.length;i++) {
+      console.log("RECETAS:",recetas[i].ingredientes[0].codigo); 
+      console.log("RECETAS:",recetas[i].ingredientes[0].cantidad); 
+      newIngredientes.push(
+        {
+          codigo: '1',
+          descripcion: 'bola',
+          precio: '234'
+        }
+      )
+    }
 
-    const newRecetas = completoIngredientes(recetas[0].ingredientes,materias);
+    console.log("RECETASNEW:",newIngredientes[0]); 
+    
+    /*
+    for (i=0;i<materias.length;i++) {
+      console.log("MATERIA1:",materias[i]); 
+      let codigo = materias[i].toString();
+      console.log("MATERIA2:",codigo); 
+      let vectorcito = codigo.split(',');
+      for (t=0;t<vectorcito.length;t++) {
+        console.log("MATERIA3:",vectorcito[t]); 
+      }
+    }
+      */
 
-    console.log("MATERIALES de la RECETA COMPLETO:",newRecetas[0]); 
+    //const newRecetas = completoIngredientes(recetas[0].ingredientes,materias);
+
+    //console.log("MATERIALES de la RECETA COMPLETO:",newRecetas[0]); 
 
     return res.status(200).json({
       ok: true,
