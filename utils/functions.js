@@ -1,46 +1,66 @@
 
-const completoIngredientes = (vector1, vector2) => {
+function completaItem(codigo, cantidad,materias) {
 
-  let vectorSalida = [];
+    let newIngredientes = null; 
 
-  for (let t = 0; t < vector1.length; t++) {
-
-    let codigo = vector1[t].codigo;
-    let codigoX = codigo.toString();
-
-    console.log("VECTOR2_0:", codigoX);
-
-    for (let i = 0; i < vector2.length; i++) {
-      const elem = vector2[i];
-
+//    console.log("INGREDIENTES - CODIGO:",codigo); 
     
-      const objPlanchado = JSON.stringify({
-        ...elem,
-        _id: elem._id.toString()
-      }, null, 2);
+    for (x=0;x<materias.length;x++) {
+      let materialesPlanchados = materias[x].toString(); 
+  //    console.log("MATERIASPLANCHADA:",materialesPlanchados); 
 
-      const { codigo } = elem;
-      console.log("VECTOR2_1:", elem._doc);
-      console.log("VECTOR2_2:", elem._doc.codigo);
-      console.log("VECTOR2_2:", elem._doc.descripcion);
-      console.log("VECTOR2_2:", elem._doc.precio);
-      console.log("VECTOR2_2:", elem._doc.unidad);
-      console.log("VECTOR2_2:", elem._doc.cantidadxbulto);
-      
-      if ( elem._doc.codigo === codigoX) {
-        console.log("VECTOR2_2:ENCONTRADO EL:",codigoX);
-      } else {
-        console.log("VECTOR2_2:NO ENCONTRADO EL 8");
+      const materialesPlanchadosLimpio = materialesPlanchados.replace(/\n/g, '');
+    //  console.log("MATERIASPLANCHADA2:",materialesPlanchadosLimpio);
+
+      let vectorcito = materialesPlanchadosLimpio.split(",");
+    //  console.log("MATERIASPLANCHADA:",vectorcito[1]); 
+
+      //vemos lo que tenemos e
+      const contiene = vectorcito[1].includes("codigo");
+      if ( contiene ) {
+        const numero = vectorcito[1].match(/\d+/)[0];
+      //  console.log("ENCONTRADO!!!:",numero); 
+
+        if ( numero === codigo ) {
+        //  console.log("ENCONTRADO x numero!!!:",numero); 
+        //  console.log("ENCONTRADO x codigo!!!:",codigo); 
+
+          let vector1 = vectorcito[2].split(':'); 
+          let descripcion = vector1[1];
+        //  console.log("ENCONTRADO x codigo!!!:",descripcion); 
+
+          vector1 = vectorcito[3].split(':'); 
+          let precio = vector1[1];
+        //  console.log("ENCONTRADO x precio!!!:",precio); 
+
+          vector1 = vectorcito[4].split(':'); 
+          let cantidadxbulto = vector1[1];
+        //  console.log("ENCONTRADO x cantidadxbulto!!!:",cantidadxbulto); 
+
+          vector1 = vectorcito[5].split(':'); 
+          let unidad = vector1[1];
+        //  console.log("ENCONTRADO x unidad!!!:",unidad); 
+
+        newIngredientes = 
+            {
+              codigo: codigo,
+              descripcion: descripcion,
+              cantidadRequerida: cantidad,
+              precio: precio,
+              cantidadxbulto,
+              unidad
+            };
+
+          return newIngredientes; 
+        }
       }
     }
-  }
 
-  // Combinamos la info del mapa con los datos de vector1
+  console.log("NO ENCONTRAMOS ELEMENTO PARA ESTE CODIGO",codigo); 
+  return newIngredientes; 
+}
 
-
-  return vectorSalida;
-};
 
 
 // Exportación estilo CommonJS
-module.exports = { completoIngredientes };
+module.exports = { completaItem };

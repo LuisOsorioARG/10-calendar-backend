@@ -1,7 +1,7 @@
 const { response } = require('express');
 const Recetas = require('../models/Recetas');
 const MateriasPrimas = require('../models/MateriasPrimas'); 
-const { completoIngredientes } = require('../utils/functions');
+const { completaItem } = require('../utils/functions');
 
 const getRecetas = async (req, res = response) => {
   try {
@@ -23,21 +23,95 @@ const getRecetas = async (req, res = response) => {
     }
 
     // PASO 1 En recetas[i].ingredientes[0].codigo tenemos en numerico el valor del codigo
-    let newIngredientes = [];
-    for (i=0;i<recetas.length;i++) {
-      console.log("RECETAS:",recetas[i].ingredientes[0].codigo); 
-      console.log("RECETAS:",recetas[i].ingredientes[0].cantidad); 
-      newIngredientes.push(
-        {
-          codigo: '1',
-          descripcion: 'bola',
-          precio: '234'
-        }
-      )
-    }
-
-    console.log("RECETASNEW:",newIngredientes[0]); 
+    let ingredientes = [];
+    let recetasNew = []; 
     
+    // barro las recetas...
+    for (i=0;i<recetas.length;i++) {
+
+      let resultado = [];
+
+
+      ingredientes = recetas[i].ingredientes;
+
+      // barro los ingredientes de esta receta
+      for (t=0;t<ingredientes.length;t++) {
+        console.log("codigo:",ingredientes[t].codigo); 
+        console.log("cantidad requerida:",ingredientes[t].cantidad); 
+        resultado.push( completaItem(ingredientes[t].codigo, ingredientes[t].cantidad,materias)); 
+        console.log("Resultado:",resultado); 
+      }
+
+      recetasNew.push({
+        codigo: recetas[i].codigo,
+        descripcion: recetas[i].descripcion,
+        rinde: recetas[i].rinde,
+        ingredientes: resultado,
+        }
+    );
+      /*
+      for (t=0;t<ingredientes.length;t++) {
+        let codigo = ingredientes[t].codigo.toString(); 
+        let cantidad = ingredientes[t].cantidad.toString(); 
+        console.log("INGREDIENTES - CODIGO:",codigo); 
+
+        for (x=0;x<materias.length;x++) {
+          let materialesPlanchados = materias[x].toString(); 
+          console.log("MATERIASPLANCHADA:",materialesPlanchados); 
+
+          const materialesPlanchadosLimpio = materialesPlanchados.replace(/\n/g, '');
+          console.log("MATERIASPLANCHADA2:",materialesPlanchadosLimpio);
+
+          let vectorcito = materialesPlanchadosLimpio.split(",");
+          console.log("MATERIASPLANCHADA:",vectorcito[1]); 
+
+          //vemos lo que tenemos e
+          const contiene = vectorcito[1].includes("codigo");
+          if ( contiene ) {
+            const numero = vectorcito[1].match(/\d+/)[0];
+            console.log("ENCONTRADO!!!:",numero); 
+
+            if ( numero === codigo ) {
+              console.log("ENCONTRADO x numero!!!:",numero); 
+              console.log("ENCONTRADO x codigo!!!:",codigo); 
+
+              let vector1 = vectorcito[2].split(':'); 
+              let descripcion = vector1[1];
+              console.log("ENCONTRADO x codigo!!!:",descripcion); 
+
+              vector1 = vectorcito[3].split(':'); 
+              let precio = vector1[1];
+              console.log("ENCONTRADO x precio!!!:",precio); 
+
+              vector1 = vectorcito[4].split(':'); 
+              let cantidadxbulto = vector1[1];
+              console.log("ENCONTRADO x cantidadxbulto!!!:",cantidadxbulto); 
+
+              vector1 = vectorcito[5].split(':'); 
+              let unidad = vector1[1];
+              console.log("ENCONTRADO x unidad!!!:",unidad); 
+
+              newIngredientes.push(
+                {
+                  codigo: codigo,
+                  descripcion: descripcion,
+                  cantidadRequerida: cantidad,
+                  precio: precio,
+                  cantidadxbulto,
+                  unidad
+                }
+              )
+
+            }
+          }
+
+        }
+
+      } */
+
+      
+    }
+  
     /*
     for (i=0;i<materias.length;i++) {
       console.log("MATERIA1:",materias[i]); 
@@ -56,7 +130,7 @@ const getRecetas = async (req, res = response) => {
 
     return res.status(200).json({
       ok: true,
-      recetas
+      recetasNew
     });
 
   } catch (error) {
