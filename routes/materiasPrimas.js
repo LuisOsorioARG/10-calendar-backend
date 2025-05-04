@@ -3,7 +3,7 @@ const { check } = require('express-validator');
 const { isDate } = require('../helpers/isDate');  
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { getMateriasPrimas} = require('../controllers/materiasPrimas');
+const { getMateriasPrimas,actualizarMateriaPrima} = require('../controllers/materiasPrimas');
 
 const router = Router(); 
 
@@ -14,29 +14,13 @@ router.use( validarJWT );
 
 router.get('/', getMateriasPrimas);
 
-/*
-router.post(
-    '/', 
-    [
-        check('customerID','El customerID es obligatorio').not().isEmpty(),
-        check('title','El titulo es obligatorio').not().isEmpty(),
-        check('start','La fecha es obligatoria').custom( isDate ),
-        check('end','Fecha del final debe ser obligatoria').custom( isDate ),
-        validarCampos
-    ]
-    , 
-    crearEvento);
-
 router.put('/:id',
     [
-    check('title','El titulo es obligatorio').not().isEmpty(),
-    check('start','La fecha es obligatoria').custom( isDate ),
-    check('end','Fecha del final debe ser obligatoria').custom( isDate ),
+    check('descripcion','La descripción es obligatoria').not().isEmpty(),
+    check('precio','El precio es obligatorio').not().isEmpty(),
     validarCampos
     ],
-    actualizarEvento);
+    actualizarMateriaPrima);
 
-router.delete('/:id', eliminarEvento);
-*/
 
 module.exports = router; 
