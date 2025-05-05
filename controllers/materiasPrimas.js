@@ -30,14 +30,9 @@ const actualizarMateriaPrima = async(req, res = response ) => {
   try {
 
       const materiaID = req.params.id;
-
-      console.log("Materias Primas: PASO 1 ",materiaID);
-
       const uid = req.uid; 
 
       const materiasPrimas = await MateriasPrimas.findById( materiaID ); 
-
-      console.log("Materias Primas: PASO 2 ");
 
       if (!materiasPrimas) {
           return res.status(404).json({
