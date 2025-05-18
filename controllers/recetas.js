@@ -36,10 +36,7 @@ const getRecetas = async (req, res = response) => {
 
       // barro los ingredientes de esta receta
       for (t=0;t<ingredientes.length;t++) {
-        console.log("codigo:",ingredientes[t].codigo); 
-        console.log("cantidad requerida:",ingredientes[t].cantidad); 
         resultado.push( completaItem(ingredientes[t].codigo, ingredientes[t].cantidad,materias)); 
-        console.log("Resultado:",resultado); 
       }
 
       recetasNew.push({
