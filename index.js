@@ -43,6 +43,8 @@ app.use('/api/materiasprimas',require('./routes/materiasPrimas'));
 
 app.use('/api/recetas',require('./routes/recetas')); 
 
+app.use('/api/receta/materiales',require('./routes/recetas')); 
+
 app.get('*',(req,res) => {
     res.sendFile( __dirname + '/public/index.html'); 
 });
