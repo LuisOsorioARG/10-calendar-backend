@@ -13,6 +13,7 @@ const getRecetas = async (req, res = response) => {
         msg: 'No hay recetas para mostrar'
       });
     }
+
     const materias = await MateriasPrimas.find();
 
     if (materias.length === 0) {
@@ -36,14 +37,16 @@ const getRecetas = async (req, res = response) => {
 
       // barro los ingredientes de esta receta
       for (t=0;t<ingredientes.length;t++) {
-        resultado.push( completaItem(ingredientes[t].codigo, ingredientes[t].cantidad,materias)); 
+        resultado.push( completaItem(ingredientes[t].codigo,ingredientes[t].cantidad,materias)); 
       }
 
       recetasNew.push({
+        id: recetas[i]._id,
         codigo: recetas[i].codigo,
         descripcion: recetas[i].descripcion,
         rinde: recetas[i].rinde,
         ingredientes: resultado,
+
         }
     );
       /*
