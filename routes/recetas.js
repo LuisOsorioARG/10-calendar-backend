@@ -4,6 +4,7 @@ const { isDate } = require('../helpers/isDate');
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 const { getRecetas } = require('../controllers/recetas');
+const { actualizarRecetaMateriales } = require('../controllers/recetasMateriales');
 
 const router = Router(); 
 
@@ -14,29 +15,6 @@ router.use( validarJWT );
 
 router.get('/', getRecetas);
 
-/*
-router.post(
-    '/', 
-    [
-        check('customerID','El customerID es obligatorio').not().isEmpty(),
-        check('title','El titulo es obligatorio').not().isEmpty(),
-        check('start','La fecha es obligatoria').custom( isDate ),
-        check('end','Fecha del final debe ser obligatoria').custom( isDate ),
-        validarCampos
-    ]
-    , 
-    crearEvento);
-
-router.put('/:id',
-    [
-    check('title','El titulo es obligatorio').not().isEmpty(),
-    check('start','La fecha es obligatoria').custom( isDate ),
-    check('end','Fecha del final debe ser obligatoria').custom( isDate ),
-    validarCampos
-    ],
-    actualizarEvento);
-
-router.delete('/:id', eliminarEvento);
-*/
+router.put('/:id', actualizarRecetaMateriales);
 
 module.exports = router; 

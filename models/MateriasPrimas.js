@@ -31,5 +31,7 @@ MateriasPrimasSchema.method('toJSON', function() {
     return object;
 });
 
+
+
 module.exports = model('materiasPrimas', MateriasPrimasSchema );
 
