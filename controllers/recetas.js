@@ -45,89 +45,12 @@ const getRecetas = async (req, res = response) => {
         codigo: recetas[i].codigo,
         descripcion: recetas[i].descripcion,
         rinde: recetas[i].rinde,
+        tipo: recetas[i].tipo,
         ingredientes: resultado,
-
         }
     );
-      /*
-      for (t=0;t<ingredientes.length;t++) {
-        let codigo = ingredientes[t].codigo.toString(); 
-        let cantidad = ingredientes[t].cantidad.toString(); 
-        console.log("INGREDIENTES - CODIGO:",codigo); 
-
-        for (x=0;x<materias.length;x++) {
-          let materialesPlanchados = materias[x].toString(); 
-          console.log("MATERIASPLANCHADA:",materialesPlanchados); 
-
-          const materialesPlanchadosLimpio = materialesPlanchados.replace(/\n/g, '');
-          console.log("MATERIASPLANCHADA2:",materialesPlanchadosLimpio);
-
-          let vectorcito = materialesPlanchadosLimpio.split(",");
-          console.log("MATERIASPLANCHADA:",vectorcito[1]); 
-
-          //vemos lo que tenemos e
-          const contiene = vectorcito[1].includes("codigo");
-          if ( contiene ) {
-            const numero = vectorcito[1].match(/\d+/)[0];
-            console.log("ENCONTRADO!!!:",numero); 
-
-            if ( numero === codigo ) {
-              console.log("ENCONTRADO x numero!!!:",numero); 
-              console.log("ENCONTRADO x codigo!!!:",codigo); 
-
-              let vector1 = vectorcito[2].split(':'); 
-              let descripcion = vector1[1];
-              console.log("ENCONTRADO x codigo!!!:",descripcion); 
-
-              vector1 = vectorcito[3].split(':'); 
-              let precio = vector1[1];
-              console.log("ENCONTRADO x precio!!!:",precio); 
-
-              vector1 = vectorcito[4].split(':'); 
-              let cantidadxbulto = vector1[1];
-              console.log("ENCONTRADO x cantidadxbulto!!!:",cantidadxbulto); 
-
-              vector1 = vectorcito[5].split(':'); 
-              let unidad = vector1[1];
-              console.log("ENCONTRADO x unidad!!!:",unidad); 
-
-              newIngredientes.push(
-                {
-                  codigo: codigo,
-                  descripcion: descripcion,
-                  cantidadRequerida: cantidad,
-                  precio: precio,
-                  cantidadxbulto,
-                  unidad
-                }
-              )
-
-            }
-          }
-
-        }
-
-      } */
-
-      
     }
   
-    /*
-    for (i=0;i<materias.length;i++) {
-      console.log("MATERIA1:",materias[i]); 
-      let codigo = materias[i].toString();
-      console.log("MATERIA2:",codigo); 
-      let vectorcito = codigo.split(',');
-      for (t=0;t<vectorcito.length;t++) {
-        console.log("MATERIA3:",vectorcito[t]); 
-      }
-    }
-      */
-
-    //const newRecetas = completoIngredientes(recetas[0].ingredientes,materias);
-
-    //console.log("MATERIALES de la RECETA COMPLETO:",newRecetas[0]); 
-
     return res.status(200).json({
       ok: true,
       recetasNew

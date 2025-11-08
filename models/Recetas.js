@@ -25,6 +25,10 @@ const ingredienteSchema = new Schema({
       type: String,
       required: true
     },
+    tipo: {
+      type: String,
+      required: false
+    },
     ingredientes: {
       type: [ingredienteSchema],
       required: true
