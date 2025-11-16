@@ -29,6 +29,10 @@ const ingredienteSchema = new Schema({
       type: String,
       required: false
     },
+    tipoReceta: {
+      type: String,
+      required: false
+    },
     ingredientes: {
       type: [ingredienteSchema],
       required: true
