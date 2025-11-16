@@ -69,8 +69,6 @@ function completaItem(codigo, cantidad,materias) {
         }
       }
     }
-
-  console.log("NO ENCONTRAMOS ELEMENTO PARA ESTE CODIGO",codigo); 
   return newIngredientes; 
 }
 

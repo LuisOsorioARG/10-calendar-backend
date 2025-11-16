@@ -46,6 +46,7 @@ const getRecetas = async (req, res = response) => {
         descripcion: recetas[i].descripcion,
         rinde: recetas[i].rinde,
         tipo: recetas[i].tipo,
+        tipoReceta: recetas[i].tipoReceta,
         ingredientes: resultado,
         }
     );
