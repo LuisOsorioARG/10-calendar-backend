@@ -72,7 +72,17 @@ function completaItem(codigo, cantidad,materias) {
   return newIngredientes; 
 }
 
+function obtenerFechaHora() {
+  const ahora = new Date();
 
+  const año = ahora.getFullYear();
+  const mes = String(ahora.getMonth() + 1).padStart(2, '0'); // meses empiezan en 0
+  const dia = String(ahora.getDate()).padStart(2, '0');
+  const horas = String(ahora.getHours()).padStart(2, '0');
+  const minutos = String(ahora.getMinutes()).padStart(2, '0');
+
+  return `${año}${mes}${dia} ${horas}:${minutos}`;
+}
 
 // Exportación estilo CommonJS
-module.exports = { completaItem };
+module.exports = { completaItem, obtenerFechaHora };

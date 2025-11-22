@@ -22,6 +22,10 @@ const MateriasPrimasSchema = Schema({
         type: String,
         required: true,
     },
+    update: {
+        type: String,
+        required: false,
+    },
 });
 
 //esto cambia el valor de los campos del json
