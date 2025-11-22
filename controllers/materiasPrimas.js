@@ -1,5 +1,6 @@
 const { response } = require('express');
 const MateriasPrimas = require('../models/MateriasPrimas');
+const { obtenerFechaHora } = require('../utils/functions');  
 
 const getMateriasPrimas = async (req, res = response) => {
   try {
@@ -55,6 +56,7 @@ const actualizarMateriaPrima = async(req, res = response ) => {
       //en este punto tengo todo OK para actualizar el evento
       const materiasPrimasNueva = {
           ...req.body,
+          update: obtenerFechaHora(),
           user:uid      //agrego el usuario que no viene en el req.body
       }
 
@@ -77,6 +79,8 @@ const actualizarMateriaPrima = async(req, res = response ) => {
   }
 
 }
+
+
 
 
 module.exports = {
