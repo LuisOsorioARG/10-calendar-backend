@@ -66,6 +66,74 @@ const getRecetas = async (req, res = response) => {
   }
 };
 
+const crearReceta = async(req, res = response ) => {
+
+    const codigo = req.body.codigo; 
+
+    let receta = await Recetas.findOne({ codigo });
+
+    if ( receta ) {
+        return res.status(400).json({
+            ok: false,
+            msg: 'Ya existe una receta con ese código:' + receta.descripcion.toString()
+            });
+    }
+
+    receta = new Recetas( req.body ); 
+
+    try {
+
+        const recetaGuardada = await receta.save(); 
+
+        return res.status(201).json({
+            ok:true,
+            receta: recetaGuardada
+        });        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+ 
+}
+
+const eliminarReceta = async(req, res = response ) => {
+    try {
+    
+        const _id = req.params.id;
+
+        const uid = req.uid; 
+
+        let receta = await Recetas.findById( _id ); 
+
+        if (!receta) {
+            return res.status(404).json({
+                ok:false,
+                msg:'Receta no existe por ese codigo'
+            })
+        }
+
+        const recetaEliminada = await Recetas.findByIdAndDelete( _id ); 
+
+        res.json({
+            ok:true,
+            receta: recetaEliminada
+        });
+       
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            msg: 'Por favor hable con el administrador'
+        });
+    }
+ 
+}
+
 module.exports = {
-  getRecetas
+  getRecetas,
+  crearReceta,
+  eliminarReceta
 };
